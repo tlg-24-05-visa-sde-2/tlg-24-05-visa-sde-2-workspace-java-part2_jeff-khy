@@ -11,8 +11,25 @@ public class TelevisionTest {
     private Television tv2;
     @Before
     public void setUp() {
-        tv1 = new Television("Sony", 50, DisplayType.OLED);
-        tv2 = new Television("Sony", 50, DisplayType.OLED);
+        tv1 = new Television("Sony", 50, DisplayType.PLASMA);
+        tv2 = new Television("Sony", 50, DisplayType.PLASMA);
+    }
+
+    @Test(expected=InvalidChannelException.class)
+    public void changeChannel_shouldThrowInvalidChannelException_whenInvalid_upperBound() {
+
+    }
+
+    @Test
+    public void changeChannel_shouldThrowInvalidChannelException_whenInvalid_lowerBound() {
+        try{
+            tv1.changeChannel(0);
+            fail("Should have thrown InvalidChannelException");
+        }
+        catch(InvalidChannelException e){
+            String expected = "Invalid channel: 0. Allowed range: [1,999].";
+            assertEquals(expected, e.getMessage());
+        }
     }
 
     @Test
@@ -38,5 +55,15 @@ public class TelevisionTest {
     public void setVolume_shouldStoreValue_whenValid_lowerBound() {
         tv1.setVolume(0);
         assertEquals(0, tv1.getVolume());
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void setVolume_shouldThrowIllegalArgumentException_whenInvalid_lowerBound() {
+        tv1.setVolume(-1);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void setVolume_shouldThrowIllegalArgumentException_whenInvalid_upperBound() {
+        tv1.setVolume(101);
     }
 }
