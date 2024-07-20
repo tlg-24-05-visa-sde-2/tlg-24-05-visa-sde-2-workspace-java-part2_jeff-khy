@@ -116,7 +116,7 @@ public class InMemoryCatalog implements Catalog {
     /**
      * TASK: find all "rock" items whose price is less than or equal to the specified price.
      */
-    public Collection<MusicItem> findRockLessThan(double price) {
+    public Collection<MusicItem> rockGenreAtSpecifiedPrice(double price) {
         Collection<MusicItem> result = new ArrayList<>();
         for (MusicItem currentItem : catalogData) {
             if(currentItem.getPrice() <= price && (currentItem.getMusicCategory().equals(MusicCategory.ROCK) || currentItem.getMusicCategory().equals(MusicCategory.CLASSIC_ROCK))){
@@ -175,6 +175,9 @@ public class InMemoryCatalog implements Catalog {
      * TASK: do we sell any items with the specified genre (MusicCategory)?
      * Another yes/no answer. YES
      */
+    public double averagePriceInGenre(){
+        return 0.0;
+    }
 
 
     /**
