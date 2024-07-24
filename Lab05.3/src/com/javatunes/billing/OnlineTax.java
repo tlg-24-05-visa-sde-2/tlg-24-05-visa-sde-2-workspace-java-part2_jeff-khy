@@ -13,6 +13,9 @@ package com.javatunes.billing;
  * 
  * TODO: implement this algorithm.
  */
-public class OnlineTax {
+public class OnlineTax implements TaxCalculator{
 
+    public double taxAmount(double taxable){
+        return 0;
+    }
 }
