@@ -38,7 +38,7 @@ import java.util.*;
  *   17       17    Dom        1    DEBIT_CARD
  */
 
-class Board {
+public class Board {
     private final Map<Integer,String> studentIdMap = loadStudentIdMap();
     private final Map<Integer,DuckRacer> racerMap  = new TreeMap<>();
 
@@ -60,17 +60,36 @@ class Board {
         }
         else{
            racer = new DuckRacer(id, studentIdMap.get(id));
-            racerMap.put(id, racer);
+           racerMap.put(id, racer);
         }
-
         racer.win(reward);
     }
 
     // TODO render the data as we see it in the real application
     public void show(){
+        /*
+         * maybe an if else here
+         * if(racerMap.isEmpty())
+         *      there are currently no results to show
+         * else
+         *      do the work below
+         */
+
         Collection<DuckRacer> racers = racerMap.values();
+
+        String header = """
+                
+                
+                
+                Duck Race Results
+                =================
+                
+                id  name        wins    rewards
+                --  ----        ----    -------""";
+
+        System.out.println(header);
         for(DuckRacer racer : racers){
-            System.out.printf("%s   %s   %s   %s\n", racer.getId(), racer.getName(), racer.getWins(), racer.getRewards());
+            System.out.printf("%s   %s      %s      %s\n", racer.getId(), racer.getName(), racer.getWins(), racer.getRewards());
         }
     }
 

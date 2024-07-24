@@ -14,6 +14,5 @@ class BoardTest {
         board.update(9, Reward.DEBIT_CARD);
 
         board.show();
-
     }
 }
