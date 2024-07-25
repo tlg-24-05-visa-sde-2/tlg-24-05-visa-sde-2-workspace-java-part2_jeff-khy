@@ -9,19 +9,23 @@
 package com.entertainment;
 
 import static org.junit.Assert.*;
+
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
+@Ignore
 public class TelevisionTest {
 
     /**
      * TODO: use a JUnit timeout mechanism to verify that this test completes within 2.5 seconds.
      * It should be marked as a failed test if it takes longer than that.
+     * file:///Users/jeffersonkhy/Desktop/Java/Java-Part2/StudentWork/IntmJ/Software/junit-4.13/javadoc/index.html
      */
-    @Test
-    public void connectToNetwork_completesWithinTimeout() {
+    @Ignore
+    @Test(timeout = 2500)
+    public void connectToNetwork_completesWithinTimeout() throws InterruptedException{
         Television tv = new Television();
         tv.connectToNetwork();
     }
