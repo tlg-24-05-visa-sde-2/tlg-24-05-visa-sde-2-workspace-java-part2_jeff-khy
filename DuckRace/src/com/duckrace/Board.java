@@ -1,6 +1,6 @@
 package com.duckrace;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -38,14 +38,46 @@ import java.util.*;
  *   17       17    Dom        1    DEBIT_CARD
  */
 
-public class Board {
+public class Board implements Serializable{
+    private static final String DATA_FILE_PATH = "data/board.dat";
+    private static final String CONF_FILE_PATH = "conf/student-ids.csv";
+
+    /*
+     *  If data/board.dat exists, the application has been run before, at least once.
+     *  Therefore, re-create the Board obj from that binary file.
+     *
+     *  If file is not there, this is the very first time the app has been run.
+     *  Therefore, create and return new Board.
+     */
+    public static Board getInstance() {
+        Board board = null;
+
+        if(Files.exists(Path.of(DATA_FILE_PATH))){
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(DATA_FILE_PATH))) {
+                board = (Board) in.readObject();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            board = new Board();
+        }
+        return board;
+    }
+
     private final Map<Integer,String> studentIdMap = loadStudentIdMap();
     private final Map<Integer,DuckRacer> racerMap  = new TreeMap<>();
+
+    //private ctor - prevent instantiation from outside - only getInstance() can do this
+    private Board(){
+
+    }
 
     /*
      * updates the board by making a duckracer win()
      *
-     * this could mean fetching an exisitng duckracer from racermap,
+     * this could mean fetching an existing duckracer from racermap,
      * or we might need to create a new duckRacer() put() it in the map
      * and then make it win()
      *
@@ -63,6 +95,7 @@ public class Board {
            racerMap.put(id, racer);
         }
         racer.win(reward);
+        save();
     }
 
     // TODO render the data as we see it in the real application
@@ -79,8 +112,6 @@ public class Board {
 
         String header = """
                 
-                
-                
                 Duck Race Results
                 =================
                 
@@ -93,6 +124,15 @@ public class Board {
         }
     }
 
+    private void save() {
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FILE_PATH))){
+            out.writeObject(this);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     void dumpStudentIdMap(){
         System.out.println(studentIdMap);
     }
@@ -100,7 +140,7 @@ public class Board {
     private Map<Integer, String> loadStudentIdMap() {
         Map<Integer, String> map = new HashMap<>();
         try {
-            List<String> lines = Files.readAllLines(Path.of("conf/student-ids.csv"));
+            List<String> lines = Files.readAllLines(Path.of(CONF_FILE_PATH));
             for(String line : lines){
                 String[] tokens = line.split(",");
                 Integer id = Integer.valueOf(tokens[0]);
